@@ -1,6 +1,8 @@
 # AMNH NGS Workshop
 
-I'm your host, Dean Bobo.  deanbobo@gmail.com or dbobo@amnh.org
+Welcome to the NGS workshop at the AMNH.
+
+My info: Dean Bobo  deanbobo@gmail.com or dbobo@amnh.org
 
 Important links:
 
