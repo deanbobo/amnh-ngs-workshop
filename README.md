@@ -15,7 +15,8 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 
 #### Overview
 
-* learn about FASTQs
+* [1. About Sequencing and FASTQs](#section-1:-about-sequencing-and-fastqs)
+
 * visualize sequencing quality and stats
 * trim reads (poor quality and adapters)
 * read mapping example (to a reference genome)
