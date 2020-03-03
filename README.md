@@ -68,9 +68,9 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 * Are FASTQ errors accurate? Not really.
 
   > In our observation the numbers are quite unreliable - treat them as an advisory rather than accurate measurements.”
-	> -BioStarHandbook 2020
-  
-* Paired end FASTQ files: Two files. One file has forward reads. Second file has reverse reads.
+  > -BioStarHandbook 2020
+
+  * Paired end FASTQ files: Two files. One file has forward reads. Second file has reverse reads.
 
 #### Paired-End Sequencing
 
@@ -78,7 +78,6 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 * Since paired end distances are known, alignment algorithms can use this information to map the reads over repetitive regions more precisely.
 
 ![Image of Paired-End Sequencing](images/paired-end-sequencing-highres.png)
-
 
 ## Section 2. Start the Virtual machine and download FASTQ files
   1. Open the VirtualBox program and download FASTQ files 
@@ -90,7 +89,7 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 
       ```cd ~```   
       ```git clone https://github.com/deanbobo/amnh-ngs-workshop.git```
-  
+
      * This will create a directory called amnh-ngs-workshop in your home directory. We will work inside this folder.
 
   4. Move FASTQ files to this new directory:   
@@ -98,41 +97,41 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
      ```mv ~/Downloads/*.fastq.gz ~/amnh-ngs-workshop/```  
      * mv command moves or renames files  
      * \* is the wildcard in linux
-   
+
      * confirm file is moved with the ```ls``` command:  
 
        ```ls -ltrh ```  
-      
+
         * ``ls`` command shows a list of files. The switches:
           * ``l`` shows the long format  
           * ``t`` sorts by time  
           * ``r`` reverses the sort so most recent files are at bottom of the list (easier to work this way)  
           * ``h`` makes file sizes human readable  
-        
+
    * SOME LINUX TIPS: 
       1. use the up arrow on your keyboard to bring up previous commands. You can edit and rerun the commands as needed.
       2. Use the tab key to autocomplete commands and files and paths
       3. Linux does not care about filename suffixes. A compressed file can live with the name file.R1.fq OR file.R1.fq.gz OR file.R1.anything. Linux **does not care**.
       4. A great way to know for sure what the file type is, is to use the ```file``` command. Example:  
-    
+
         ```file MY_FILENAME_HERE```  
 
   5. Look at the FASTQ file with ``less``
 
    * ```less``` can often look at compressed data without any other tools (not true for BAM files)  
-   
+
      ```less MY_FILENAME_HERE```  
      ```less Picon-19C-AC05_R1_001.fastq.gz```  
-  
+
   * if you do not want the text to wrap, use the ```-S``` switch.  
-  
+
     ```less -S MY_FILENAME_HERE```
 
 6. Count the number of reads in each FASTQ file.   
 
   ```echo $(zcat MY_FILENAME_HERE.R1.fastq.gz | wc -l)/4|bc```
   ```echo $(zcat MY_FILENAME_HERE.R2.fastq.gz | wc -l)/4|bc```
-  
+
 ## Section 3: About Sequencing Quality Control (QC)
 
 * Quality control (QC) is the process of improving data by removing identifiable errors from it. 
@@ -142,7 +141,7 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 * Is QC important?
   * The more unknowns about the genome under study, the more critical it is to correct any errors.
   * When aligning against well-studied and known genomes, we can recognize and identify errors by their alignments. When assembling a de novo genome, mistakes can derail the process; hence, it is more important to apply a higher stringency for filtering.
-  
+
 * QC typically follows this process:
   1. Evaluate (visualize) data quality
   2. Stop and move to next analysis step if the quality appears to be satisfactory.
@@ -152,7 +151,7 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
   * There are many tools to evaluate (and visualize) data quality, but here we will use FastQC - probably the most popular tool. Generate the fastqc plots with this command:  
 
     ```fastqc MY_FORWARD_FASTQ_FILE_HERE MY_REVERSE_FASTQ_FILE_HERE```
- 
+
   * List the files  
 
     ```ls -ltrh```  
@@ -170,7 +169,7 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 
   * Should I be worried about the red X error symbols?
     * Not unless all or most of the tests are failing. Most of the time, these symbols are not meaningful. They were developed for paticular libraries and sequencing instruments. Your samples are probably different. It is better to interpret the analyses yourself. This requires an understanding of each plot.
-  
+
 #### Quality Scores Across All Bases  
 * The simplest way to snapshot the quality of a sequencing run is via a chart that plots the error likelihood at each position averaged over all measurements.  
 ![Image of Quality Score Averages](images/fastqc-sequence-quality.png)
@@ -213,8 +212,8 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 
 * We will use Trimmomatic to do dynamic trimming. We'll use a sliding window (size = 4 bp). If the quality score for the 4 bases is < 20, the read gets chomped. So after this step, reads will all not be the same length. 
 * IMPORTANT: The window size and quality thresholds in this example are not standard practice. This is an example. you have to decide what quality thresholds are appropriate for your project. 
-   * Note: In the example (pseudocode) below, you have to replace anything inside square brackets [ ]. The backslashes "escape" the hard return. You'll see that in many bash examples.
-   * Another note: The trimmomatic command is order sensitive. The order of input/output files matters. Follow this guide:
+  * Note: In the example (pseudocode) below, you have to replace anything inside square brackets [ ]. The backslashes "escape" the hard return. You'll see that in many bash examples.
+  * Another note: The trimmomatic command is order sensitive. The order of input/output files matters. Follow this guide:
 
   ```
   TrimmomaticPE \
@@ -226,20 +225,20 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
   [output_reverse_unpaired] \
   SLIDINGWINDOW:4:20
   ```  
-  
+
 Run Trimmomatic. 
   Here is an example of a working Trimmomatic command:
 
     ```
     TrimmomaticPE  Groth-07C-JG2_R1_001.fastq.gz Groth-07C-JG2_R2_001.fastq.gz Groth-07C-JG2_R1_001_trimmed.fastq.gz Groth-07C-JG2_R1_unpaired.fastq.gz Groth-07C-JG2_R2_001_trimmed.fastq.gz Groth-07C-JG2_R2_001_unpaired.fastq.gz SLIDINGWINDOW:4:20
     ```  
-  
+
   Before trimmomatic:
   ![Image of Before Trimmomatic](images/groth_quality_before.png)  
 
   After trimmomatic:
   ![Image of After Trimmomatic](images/groth_quality_after.png)
-  
+
   * As you can see from the before and after plots, trimmomatic removed parts of reads where quality was low. The average quality score at each position improvement is reflected in the second "After trimmomatic" plot. **AGAIN: this filter may be entirely too aggressive for your purposes.**
 
 ## Section 6: Adapter Removal
@@ -251,23 +250,23 @@ Run Trimmomatic.
   ![Image of Before CutAdapt](images/groth_adapter_before.png) 
 
   Example of cutadapt: 
-  
+
     ```cutadapt -a AGATCGGAAGAG \            #Illumina universal adapter
     -o R1.trimmed.cutadapt.fastq.gz \     #output  forward
     -p R2.trimmed.cutadapt.fastq.gz \     #output reverse
     in.R1.trimmed.fastq.gz \              #input forward
     in.R2.trimmed.fastq.gz                #input reverse```   
-    
+
    Here is a working code example:
    ```
    cutadapt -a AGATCGGAAGAG -o Groth-07C-JG2_R1_001_trimmed.cutadapt.fastq.gz -p Groth-07C-JG2_R2_001_trimmed.cutadapt.fastq.gz Groth-07C-JG2_R1_001_trimmed.fastq.gz Groth-07C-JG2_R2_001_trimmed.fastq.gz
    ```
-    
+
    * You can run ```fastqc``` after running cutadapt and compare the plots before and after adapter removal.  
-   
+
    Plot of adapters after running cut adapt:
    ![Image of After CutAdapt](images/groth_adapter_after.png)
-   
+
    It is very easy to see that the adapters are removed before the before and after plot.
 
 ## Section 7: Read Alignment  
@@ -288,28 +287,27 @@ Run Trimmomatic.
 
    3. Create a SAMTOOLS index file  
     ```samtools faidx canFam3.1.MT.fa```  
-   
+
    4. Create a sequence dictionary with Picard  
     ```picard-tools CreateSequenceDictionary R=canFam3.1.MT.fa O=canFam3.1.MT.dict```  
-    
+
    NOTE: picard-tools may not be installed. If that is the case, install it with this command:  
     ```sudo apt install picard-tools```  
    You'll need to type in the password. No characters will appear when you type in the password.  
 
   #### Mapping Reads  
-  
-   5. Map the reads with BWA.   
+
+    5. Map the reads with BWA.   
     ```bwa mem –R '@RG\tID:coyote\tSM:coyote\tLB:coyote\tPL:Illumina' canFam3.1.MT.fa coyote.R1.MT.fq.gz coyote.R2.MT.fq.gz -t 2 | samtools view -bS - > coyote.MT.bam```  
-      
-   6. Sort the BAM. (sorts by coordinates)  
-     ```samtools sort -o coyote.MT.sorted.bam coyote.MT.bam```  
-       
-   7. Index the BAM. This will create the file coyote.MT.sorted.bam.bai  
+
+    6. Sort the BAM. (sorts by coordinates)  
+    ```samtools sort -o coyote.MT.sorted.bam coyote.MT.bam```  
+
+    7. Index the BAM. This will create the file coyote.MT.sorted.bam.bai  
     ```samtools index coyote.MT.sorted.bam```  
-       
 
   #### Generate Basic Stats  
-  
+
    8. Use samtools flagstat to generate some information about the mapping:
      ``` samtools flagstat coyote.MT.sorted.bam ```
    OUTPUT:
@@ -326,16 +324,15 @@ Run Trimmomatic.
       > 6 + 0 singletons (0.01% : N/A)  
       > 0 + 0 with mate mapped to a different chr  
       > 0 + 0 with mate mapped to a different chr (mapQ>=5)  
- 
+
  #### Visualizing Alignments
    9. Use samtools tview to visualize read alignments.
-   
+
       pseudocode:
        ```samtools tview [BAM] [REFERENCE]```  
-     
+
       working code:
        ```samtools tview coyote.MT.sorted.bam canFam3.1.MT.fa```
-     
+
       ![Image of Pileup](images/samtools-tview.png)
-     
 
