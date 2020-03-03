@@ -22,7 +22,7 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 * [4. Evaluate Data Quality](#section-4-evalute-data-quality)
 * [5. Read Trimming](#section-5-read-trimming)
 * [6. Adapter Removal](#section-6-adapter-removal)
-* [7. Read Mapping to a Reference Genome](#section-7-read-mapping-to-a-reference-genome)
+* [7. Read Alignment](#section-7-read-alignment)
 
 ## Section 1: About Sequencing and FASTQs
 
@@ -270,7 +270,7 @@ Run Trimmomatic.
    
    It is very easy to see that the adapters are removed before the before and after plot.
 
-## Section 7: Read Mapping to a Reference Genome  
+## Section 7: Read Alignment  
   * A reference genome is in fasta format.
   * The reads from short read sequencing are aligned with a program like BWA or BowTie. Here we will use BWA.
   * The alignment file is a SAM file (BAM is simply the compressed [binary] version of a SAM file).
@@ -280,35 +280,62 @@ Run Trimmomatic.
   * More information about SAM format: https://samtools.github.io/hts-specs/SAMv1.pdf
 
   #### Indexing the reference genome  
-    1. Decompress the reference genome  
+   1. Decompress the reference genome  
     ```gunzip canFam3.1.MT.fa.gz```   
 
-    2. Create a BWA index file  
+   2. Create a BWA index file  
     ```bwa index canFam3.1.MT.fa```  
 
-    3. Create a SAMTOOLS index file  
+   3. Create a SAMTOOLS index file  
     ```samtools faidx canFam3.1.MT.fa```  
-
-    4. Create a sequence dictionary with Picard  
+   
+   4. Create a sequence dictionary with Picard  
     ```picard-tools CreateSequenceDictionary R=canFam3.1.MT.fa O=canFam3.1.MT.dict```  
-    NOTE: picard-tools may not be installed. If that is the case, install it with this command:  
+    
+   NOTE: picard-tools may not be installed. If that is the case, install it with this command:  
     ```sudo apt install picard-tools```  
-    You'll need to type in the password. No characters will appear when you type in the password.  
+   You'll need to type in the password. No characters will appear when you type in the password.  
 
   #### Mapping Reads  
   
-    5. Map the reads with BWA.   
+   5. Map the reads with BWA.   
     ```bwa mem –R '@RG\tID:coyote\tSM:coyote\tLB:coyote\tPL:Illumina' canFam3.1.MT.fa coyote.R1.MT.fq.gz coyote.R2.MT.fq.gz -t 2 | samtools view -bS - > coyote.MT.bam```  
       
-    6. Sort the BAM. (sorts by coordinates)  
+   6. Sort the BAM. (sorts by coordinates)  
      ```samtools sort -o coyote.MT.sorted.bam coyote.MT.bam```  
        
-    7. Index the BAM. This will create the file coyote.MT.sorted.bam.bai  
+   7. Index the BAM. This will create the file coyote.MT.sorted.bam.bai  
     ```samtools index coyote.MT.sorted.bam```  
        
 
   #### Generate Basic Stats  
   
-     8. Use samtools flagstat to generate some information about the mapping:
+   8. Use samtools flagstat to generate some information about the mapping:
      ``` samtools flagstat coyote.MT.sorted.bam ```
-   * OUTPUT
+   OUTPUT:
+      > 112788 + 0 in total (QC-passed reads + QC-failed reads)  
+      > 0 + 0 secondary  
+      > 670 + 0 supplementary  
+      > 0 + 0 duplicates  
+      > 112782 + 0 mapped (99.99% : N/A)  
+      > 112118 + 0 paired in sequencing  
+      > 56059 + 0 read1  
+      > 56059 + 0 read2  
+      > 109626 + 0 properly paired (97.78% : N/A)  
+      > 112106 + 0 with itself and mate mapped  
+      > 6 + 0 singletons (0.01% : N/A)  
+      > 0 + 0 with mate mapped to a different chr  
+      > 0 + 0 with mate mapped to a different chr (mapQ>=5)  
+ 
+ #### Visualizing Alignments
+   9. Use samtools tview to visualize read alignments.
+   
+      pseudocode:
+       ```samtools tview [BAM] [REFERENCE]```  
+     
+      working code:
+       ```samtools tview coyote.MT.sorted.bam canFam3.1.MT.fa```
+     
+      ![Image of Pileup](images/samtools-tview.png)
+     
+
