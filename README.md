@@ -15,12 +15,14 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 
 #### Overview
 
-* [1. About Sequencing and FASTQs](#section-1:-about-sequencing-and-fastqs)
+* [1. About Sequencing and FASTQs](#section-1-about-sequencing-and-fastqs)
 
-* visualize sequencing quality and stats
-* trim reads (poor quality and adapters)
-* read mapping example (to a reference genome)
-* discuss _de novo_ assembly
+* [2. Start Virtual Machine and Download FASTQ files](#section-2-start-the-virtual-machine-and-download-fastq-files)
+* [3. About Sequencing Quality Control](#section-3-about-sequencing-quality-control-qc)
+* [4. Evaluate Data Quality](#section-4-evalute-data-quality)
+* [5. Read Trimming](#section-5-read-trimming)
+* [6. Adapter Removal](#section-6-adapter-removal)
+* [7. Read Mapping to a Reference Genome](#section-7-read-mapping-to-a-reference-genome)
 
 ## Section 1: About Sequencing and FASTQs
 
@@ -225,7 +227,7 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
   SLIDINGWINDOW:4:20
   ```  
   
-8. Run Trimmomatic. 
+Run Trimmomatic. 
   Here is an example of a working Trimmomatic command:
 
     ```
@@ -243,7 +245,7 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 ## Section 6: Adapter Removal
 
   * FastQC detected cases of Illumina universal adapter in this example.  
-  * We will use the program ``cutadapt`` to remove adapters. 
+  * We will use the program ```cutadapt``` to remove adapters. 
 
   Before adapter removal:
   ![Image of Before CutAdapt](images/groth_adapter_before.png) 
@@ -261,11 +263,52 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
    cutadapt -a AGATCGGAAGAG -o Groth-07C-JG2_R1_001_trimmed.cutadapt.fastq.gz -p Groth-07C-JG2_R2_001_trimmed.cutadapt.fastq.gz Groth-07C-JG2_R1_001_trimmed.fastq.gz Groth-07C-JG2_R2_001_trimmed.fastq.gz
    ```
     
-   * You can run ``fastqc`` after running cutadapt and compare the plots before and after adapter removal.  
+   * You can run ```fastqc``` after running cutadapt and compare the plots before and after adapter removal.  
    
    Plot of adapters after running cut adapt:
    ![Image of After CutAdapt](images/groth_adapter_after.png)
    
    It is very easy to see that the adapters are removed before the before and after plot.
 
+## Section 7: Read Mapping to a Reference Genome  
+  * A reference genome is in fasta format.
+  * The reads from short read sequencing are aligned with a program like BWA or BowTie. Here we will use BWA.
+  * The alignment file is a SAM file (BAM is simply the compressed [binary] version of a SAM file).
+  * SAM files are tab delimited text files.
+    * Each row represents a single read.
+    * Each column has information about that read.
+  * More information about SAM format: https://samtools.github.io/hts-specs/SAMv1.pdf
+
+  #### Indexing the reference genome  
+    1. Decompress the reference genome  
+    ```gunzip canFam3.1.MT.fa.gz```   
+
+    2. Create a BWA index file  
+    ```bwa index canFam3.1.MT.fa```  
+
+    3. Create a SAMTOOLS index file  
+    ```samtools faidx canFam3.1.MT.fa```  
+
+    4. Create a sequence dictionary with Picard  
+    ```picard-tools CreateSequenceDictionary R=canFam3.1.MT.fa O=canFam3.1.MT.dict```  
+    NOTE: picard-tools may not be installed. If that is the case, install it with this command:  
+    ```sudo apt install picard-tools```  
+    You'll need to type in the password. No characters will appear when you type in the password.  
+
+  #### Mapping Reads  
   
+    5. Map the reads with BWA.   
+    ```bwa mem –R '@RG\tID:coyote\tSM:coyote\tLB:coyote\tPL:Illumina' canFam3.1.MT.fa coyote.R1.MT.fq.gz coyote.R2.MT.fq.gz -t 2 | samtools view -bS - > coyote.MT.bam```  
+      
+    6. Sort the BAM. (sorts by coordinates)  
+     ```samtools sort -o coyote.MT.sorted.bam coyote.MT.bam```  
+       
+    7. Index the BAM. This will create the file coyote.MT.sorted.bam.bai  
+    ```samtools index coyote.MT.sorted.bam```  
+       
+
+  #### Generate Basic Stats  
+  
+     8. Use samtools flagstat to generate some information about the mapping:
+     ``` samtools flagstat coyote.MT.sorted.bam ```
+   * OUTPUT
