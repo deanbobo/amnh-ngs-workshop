@@ -254,7 +254,8 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
   -o R1.trimmed.cutadapt.fastq.gz \     #output  forward
   -p R2.trimmed.cutadapt.fastq.gz \     #output reverse
   in.R1.trimmed.fastq.gz \              #input forward
-  in.R2.trimmed.fastq.gz                #input reverse```   
+  in.R2.trimmed.fastq.gz                #input reverse
+  ```   
 
   Here is a working code example:
   ```
