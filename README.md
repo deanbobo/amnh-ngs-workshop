@@ -213,7 +213,7 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 * We will use Trimmomatic to do dynamic trimming. We'll use a sliding window (size = 4 bp). If the quality score for the 4 bases is < 20, the read gets chomped. So after this step, reads will all not be the same length. 
 * IMPORTANT: The window size and quality thresholds in this example are not standard practice. This is an example. you have to decide what quality thresholds are appropriate for your project. 
   * Note: In the example (pseudocode) below, you have to replace anything inside square brackets [ ]. The backslashes "escape" the hard return. You'll see that in many bash examples.
-  * Another note: The trimmomatic command is order sensitive. The order of input/output files matters. Follow this guide:
+  * Another note: The trimmomatic command is order sensitive. The order of input/output files matters. Follow this psudocode as a guide:  
 
   ```
   TrimmomaticPE \
