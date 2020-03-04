@@ -330,11 +330,11 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
   #### Visualizing Alignments
   9. Use samtools tview to visualize read alignments.
 
-  pseudocode:  
-  ```samtools tview [BAM] [REFERENCE]```  
+    pseudocode:  
+    ```samtools tview [BAM] [REFERENCE]```  
 
-  working code:  
-  ```samtools tview coyote.MT.sorted.bam canFam3.1.MT.fa```
+    working code:  
+    ```samtools tview coyote.MT.sorted.bam canFam3.1.MT.fa```
 
-  ![Image of Pileup](images/samtools-tview.png)
+    ![Image of Pileup](images/samtools-tview.png)
 
