@@ -309,7 +309,7 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 
   #### Generate Basic Stats  
 
-   8. Use samtools flagstat to generate some information about the mapping:  
+  8. Use samtools flagstat to generate some information about the mapping:  
      ``` samtools flagstat coyote.MT.sorted.bam ```  
       
       OUTPUT:
@@ -327,8 +327,8 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
       > 0 + 0 with mate mapped to a different chr  
       > 0 + 0 with mate mapped to a different chr (mapQ>=5)  
 
-  #### Visualizing Alignments
-  9. Use samtools tview to visualize read alignments.
+  #### Visualizing Alignments  
+  9. Use samtools tview to visualize read alignments.  
 
     pseudocode:  
     ```samtools tview [BAM] [REFERENCE]```  
