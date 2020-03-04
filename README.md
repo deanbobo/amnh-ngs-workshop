@@ -279,7 +279,7 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 
   #### Indexing the reference genome  
   1. Decompress the reference genome  
-  ```gunzip canFam3.1.MT.fa.gz```   
+  ```gunzip canFam3.1.MT.fa.gz```  
 
   2. Create a BWA index file  
   ```bwa index canFam3.1.MT.fa```  
@@ -296,7 +296,7 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 
   #### Mapping Reads  
 
-  5. Map the reads with BWA.   
+  5. Map the reads with BWA.  
   ```bwa mem –R '@RG\tID:coyote\tSM:coyote\tLB:coyote\tPL:Illumina' canFam3.1.MT.fa coyote.R1.MT.fq.gz coyote.R2.MT.fq.gz -t 2 | samtools view -bS - > coyote.MT.bam```  
 
   6. Sort the BAM. (sorts by coordinates)  
@@ -327,10 +327,10 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
   #### Visualizing Alignments
   9. Use samtools tview to visualize read alignments.
 
-  pseudocode:
+  pseudocode:  
   ```samtools tview [BAM] [REFERENCE]```  
 
-  working code:
+  working code:  
   ```samtools tview coyote.MT.sorted.bam canFam3.1.MT.fa```
 
   ![Image of Pileup](images/samtools-tview.png)
