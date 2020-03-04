@@ -257,43 +257,43 @@ Run Trimmomatic.
     in.R1.trimmed.fastq.gz \              #input forward
     in.R2.trimmed.fastq.gz                #input reverse```   
 
-   Here is a working code example:
-   ```
-   cutadapt -a AGATCGGAAGAG -o Groth-07C-JG2_R1_001_trimmed.cutadapt.fastq.gz -p Groth-07C-JG2_R2_001_trimmed.cutadapt.fastq.gz Groth-07C-JG2_R1_001_trimmed.fastq.gz Groth-07C-JG2_R2_001_trimmed.fastq.gz
-   ```
+  Here is a working code example:
+  ```
+  cutadapt -a AGATCGGAAGAG -o Groth-07C-JG2_R1_001_trimmed.cutadapt.fastq.gz -p Groth-07C-JG2_R2_001_trimmed.cutadapt.fastq.gz Groth-07C-JG2_R1_001_trimmed.fastq.gz Groth-07C-JG2_R2_001_trimmed.fastq.gz  
+  ```
 
-   * You can run ```fastqc``` after running cutadapt and compare the plots before and after adapter removal.  
+  * You can run ```fastqc``` after running cutadapt and compare the plots before and after adapter removal.  
 
-   Plot of adapters after running cut adapt:
-   ![Image of After CutAdapt](images/groth_adapter_after.png)
+  Plot of adapters after running cut adapt:  
+  ![Image of After CutAdapt](images/groth_adapter_after.png)  
 
-   It is very easy to see that the adapters are removed before the before and after plot.
+  It is very easy to see that the adapters are removed before the before and after plot.  
 
 ## Section 7: Read Alignment  
-  * A reference genome is in fasta format.
-  * The reads from short read sequencing are aligned with a program like BWA or BowTie. Here we will use BWA.
-  * The alignment file is a SAM file (BAM is simply the compressed [binary] version of a SAM file).
-  * SAM files are tab delimited text files.
-    * Each row represents a single read.
-    * Each column has information about that read.
-  * More information about SAM format: https://samtools.github.io/hts-specs/SAMv1.pdf
+  * A reference genome is in fasta format.  
+  * The reads from short read sequencing are aligned with a program like BWA or BowTie. Here we will use BWA.  
+  * The alignment file is a SAM file (BAM is simply the compressed [binary] version of a SAM file).  
+  * SAM files are tab delimited text files.  
+    * Each row represents a single read.  
+    * Each column has information about that read.  
+  * More information about SAM format: https://samtools.github.io/hts-specs/SAMv1.pdf  
 
   #### Indexing the reference genome  
-   1. Decompress the reference genome  
+    1. Decompress the reference genome  
     ```gunzip canFam3.1.MT.fa.gz```   
 
-   2. Create a BWA index file  
+    2. Create a BWA index file  
     ```bwa index canFam3.1.MT.fa```  
 
-   3. Create a SAMTOOLS index file  
+    3. Create a SAMTOOLS index file  
     ```samtools faidx canFam3.1.MT.fa```  
 
-   4. Create a sequence dictionary with Picard  
+    4. Create a sequence dictionary with Picard  
     ```picard-tools CreateSequenceDictionary R=canFam3.1.MT.fa O=canFam3.1.MT.dict```  
 
-   NOTE: picard-tools may not be installed. If that is the case, install it with this command:  
+    NOTE: picard-tools may not be installed. If that is the case, install it with this command:  
     ```sudo apt install picard-tools```  
-   You'll need to type in the password. No characters will appear when you type in the password.  
+    You'll need to type in the password. No characters will appear when you type in the password.  
 
   #### Mapping Reads  
 
@@ -309,7 +309,7 @@ Run Trimmomatic.
   #### Generate Basic Stats  
 
    8. Use samtools flagstat to generate some information about the mapping:
-     ``` samtools flagstat coyote.MT.sorted.bam ```
+     ``` samtools flagstat coyote.MT.sorted.bam ```  
    OUTPUT:
       > 112788 + 0 in total (QC-passed reads + QC-failed reads)  
       > 0 + 0 secondary  
@@ -325,14 +325,14 @@ Run Trimmomatic.
       > 0 + 0 with mate mapped to a different chr  
       > 0 + 0 with mate mapped to a different chr (mapQ>=5)  
 
- #### Visualizing Alignments
-   9. Use samtools tview to visualize read alignments.
+  #### Visualizing Alignments
+    9. Use samtools tview to visualize read alignments.
 
-      pseudocode:
-       ```samtools tview [BAM] [REFERENCE]```  
+    pseudocode:
+    ```samtools tview [BAM] [REFERENCE]```  
 
-      working code:
+    working code:
        ```samtools tview coyote.MT.sorted.bam canFam3.1.MT.fa```
 
-      ![Image of Pileup](images/samtools-tview.png)
+    ![Image of Pileup](images/samtools-tview.png)
 
