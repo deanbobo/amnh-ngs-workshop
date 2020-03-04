@@ -226,12 +226,11 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
   SLIDINGWINDOW:4:20
   ```  
 
-Run Trimmomatic. 
-  Here is an example of a working Trimmomatic command:
+  Run Trimmomatic. Here is an example of a working Trimmomatic command:
 
-  ```
-  TrimmomaticPE  Groth-07C-JG2_R1_001.fastq.gz Groth-07C-JG2_R2_001.fastq.gz Groth-07C-JG2_R1_001_trimmed.fastq.gz Groth-07C-JG2_R1_unpaired.fastq.gz Groth-07C-JG2_R2_001_trimmed.fastq.gz Groth-07C-JG2_R2_001_unpaired.fastq.gz SLIDINGWINDOW:4:20
-  ```
+    ```
+    TrimmomaticPE  Groth-07C-JG2_R1_001.fastq.gz Groth-07C-JG2_R2_001.fastq.gz Groth-07C-JG2_R1_001_trimmed.fastq.gz Groth-07C-JG2_R1_unpaired.fastq.gz Groth-07C-JG2_R2_001_trimmed.fastq.gz Groth-07C-JG2_R2_001_unpaired.fastq.gz SLIDINGWINDOW:4:20
+    ```
 
   Before trimmomatic:
   ![Image of Before Trimmomatic](images/groth_quality_before.png)  
