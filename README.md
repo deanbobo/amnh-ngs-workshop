@@ -250,11 +250,11 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 
   Example of cutadapt: 
 
-    ```cutadapt -a AGATCGGAAGAG \            #Illumina universal adapter
-    -o R1.trimmed.cutadapt.fastq.gz \     #output  forward
-    -p R2.trimmed.cutadapt.fastq.gz \     #output reverse
-    in.R1.trimmed.fastq.gz \              #input forward
-    in.R2.trimmed.fastq.gz                #input reverse```   
+  ```cutadapt -a AGATCGGAAGAG \            #Illumina universal adapter
+  -o R1.trimmed.cutadapt.fastq.gz \     #output  forward
+  -p R2.trimmed.cutadapt.fastq.gz \     #output reverse
+  in.R1.trimmed.fastq.gz \              #input forward
+  in.R2.trimmed.fastq.gz                #input reverse```   
 
   Here is a working code example:
   ```
@@ -278,32 +278,32 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
   * More information about SAM format: https://samtools.github.io/hts-specs/SAMv1.pdf  
 
   #### Indexing the reference genome  
-    1. Decompress the reference genome  
-    ```gunzip canFam3.1.MT.fa.gz```   
+  1. Decompress the reference genome  
+  ```gunzip canFam3.1.MT.fa.gz```   
 
-    2. Create a BWA index file  
-    ```bwa index canFam3.1.MT.fa```  
+  2. Create a BWA index file  
+  ```bwa index canFam3.1.MT.fa```  
 
-    3. Create a SAMTOOLS index file  
-    ```samtools faidx canFam3.1.MT.fa```  
+  3. Create a SAMTOOLS index file  
+  ```samtools faidx canFam3.1.MT.fa```  
 
-    4. Create a sequence dictionary with Picard  
-    ```picard-tools CreateSequenceDictionary R=canFam3.1.MT.fa O=canFam3.1.MT.dict```  
+  4. Create a sequence dictionary with Picard  
+  ```picard-tools CreateSequenceDictionary R=canFam3.1.MT.fa O=canFam3.1.MT.dict```  
 
-    NOTE: picard-tools may not be installed. If that is the case, install it with this command:  
-    ```sudo apt install picard-tools```  
-    You'll need to type in the password. No characters will appear when you type in the password.  
+  NOTE: picard-tools may not be installed. If that is the case, install it with this command:  
+  ```sudo apt install picard-tools```  
+  You'll need to type in the password. No characters will appear when you type in the password.  
 
   #### Mapping Reads  
 
-    5. Map the reads with BWA.   
-    ```bwa mem –R '@RG\tID:coyote\tSM:coyote\tLB:coyote\tPL:Illumina' canFam3.1.MT.fa coyote.R1.MT.fq.gz coyote.R2.MT.fq.gz -t 2 | samtools view -bS - > coyote.MT.bam```  
+  5. Map the reads with BWA.   
+  ```bwa mem –R '@RG\tID:coyote\tSM:coyote\tLB:coyote\tPL:Illumina' canFam3.1.MT.fa coyote.R1.MT.fq.gz coyote.R2.MT.fq.gz -t 2 | samtools view -bS - > coyote.MT.bam```  
 
-    6. Sort the BAM. (sorts by coordinates)  
-    ```samtools sort -o coyote.MT.sorted.bam coyote.MT.bam```  
+  6. Sort the BAM. (sorts by coordinates)  
+  ```samtools sort -o coyote.MT.sorted.bam coyote.MT.bam```  
 
-    7. Index the BAM. This will create the file coyote.MT.sorted.bam.bai  
-    ```samtools index coyote.MT.sorted.bam```  
+  7. Index the BAM. This will create the file coyote.MT.sorted.bam.bai  
+  ```samtools index coyote.MT.sorted.bam```  
 
   #### Generate Basic Stats  
 
@@ -325,13 +325,13 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
       > 0 + 0 with mate mapped to a different chr (mapQ>=5)  
 
   #### Visualizing Alignments
-    9. Use samtools tview to visualize read alignments.
+  9. Use samtools tview to visualize read alignments.
 
-    pseudocode:
-    ```samtools tview [BAM] [REFERENCE]```  
+  pseudocode:
+  ```samtools tview [BAM] [REFERENCE]```  
 
-    working code:
-       ```samtools tview coyote.MT.sorted.bam canFam3.1.MT.fa```
+  working code:
+  ```samtools tview coyote.MT.sorted.bam canFam3.1.MT.fa```
 
-    ![Image of Pileup](images/samtools-tview.png)
+  ![Image of Pileup](images/samtools-tview.png)
 
