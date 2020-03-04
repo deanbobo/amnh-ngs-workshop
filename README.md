@@ -311,8 +311,8 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 
    8. Use samtools flagstat to generate some information about the mapping:  
      ``` samtools flagstat coyote.MT.sorted.bam ```  
-     
-   OUTPUT:
+      
+      OUTPUT:
       > 112788 + 0 in total (QC-passed reads + QC-failed reads)  
       > 0 + 0 secondary  
       > 670 + 0 supplementary  
