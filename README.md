@@ -250,7 +250,8 @@ FASTQ files in dropbox: https://www.dropbox.com/sh/dbrmh6umigxcuxq/AAAB7Uup69tJW
 
   Example of cutadapt: 
 
-  ```cutadapt -a AGATCGGAAGAG \            #Illumina universal adapter
+  ```
+  cutadapt -a AGATCGGAAGAG \            #Illumina universal adapter
   -o R1.trimmed.cutadapt.fastq.gz \     #output  forward
   -p R2.trimmed.cutadapt.fastq.gz \     #output reverse
   in.R1.trimmed.fastq.gz \              #input forward
